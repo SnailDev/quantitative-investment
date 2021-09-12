@@ -6,7 +6,9 @@ from urllib3.util.retry import Retry
 
 from util import logger
 
-HOT_SEARCH_URL = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=30&only_count=0&current=5_30&pct=&chgpct=7_12&tr=15_25&pettm=10_80&mc=5000000000_20000000000&pct10=20_50&_=1631011206501"
+HOT_STOCK_URL = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=30&only_count=0&current=5_30&pct=&chgpct=7_12&tr=15_25&pettm=10_80&mc=5000000000_20000000000&pct10=20_50&_=1631011206501"
+
+NOTIFY_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=644a66fc-467e-4ce4-9573-0c845429248a"
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
@@ -37,10 +39,22 @@ class Core:
         resp = None
         try:
             with request_session() as s:
-                resp = s.get(HOT_SEARCH_URL)
+                resp = s.get(HOT_STOCK_URL)
         except:
-            logger.exception('get hot search failed')
+            logger.exception('get hot stock failed')
         return (json.loads(resp.text), resp)
+
+    def notify(self, text):
+        """企业微信通知
+        """
+        resp = None
+        try:
+            with request_session() as s:
+                resp = s.post(NOTIFY_URL, json={
+                              'msgtype': 'markdown', 'markdown': {'content': text}})
+        except:
+            logger.exception('notify failed')
+        return (resp.text, resp)
 
 
 if __name__ == "__main__":

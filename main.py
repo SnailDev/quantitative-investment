@@ -79,6 +79,9 @@ def run():
     archiveMd = generate_archive_md(stocks['data']['list'])
     save_archive_md(archiveMd)
 
+    # 企业微信通知
+    core.notify(readme)
+
 
 if __name__ == "__main__":
     run()
