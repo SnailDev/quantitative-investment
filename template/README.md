@@ -1,6 +1,6 @@
 # quantitative-investment
 
-证券交易日，9:30-11:30，13:00-15:00，每半时抓取一次数据，按天[归档](archives)。
+证券交易日，9:00-15:00，每半时抓取一次数据，按天[归档](archives)。
 
 `更新时间：{updateTime}`
 
